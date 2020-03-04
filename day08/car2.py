@@ -6,6 +6,7 @@
 # @File    : car2.py
 # @Software: PyCharm
 
+
 class Car(object):
 
     def __init__(self, brand, max_speed):
