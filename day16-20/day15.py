@@ -9,6 +9,7 @@
 排序算法
 """
 
+
 def selecet_sort(orign_items, comp=lambda x, y:x < y):
     '''简单选择排序'''
     items = orign_items[:]
@@ -19,6 +20,7 @@ def selecet_sort(orign_items, comp=lambda x, y:x < y):
                 min_index = j
             items[i], items[min_index] = items[min_index], items[i]
         return items
+
 
 def bubble_sort(orign_items, comp=lambda x, y:x >y):
     """高质量冒泡排序（搅拌排序）"""
@@ -38,6 +40,7 @@ def bubble_sort(orign_items, comp=lambda x, y:x >y):
         if not swapped:
             break
     return items
+
 
 def merge_sort(items, comp=lambda x, y: x <= y):
     """归并排序(分治法)"""
