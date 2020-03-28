@@ -8,7 +8,7 @@
 ~~~
 CSS
 ~~~
-~~~
+~~~ html
 <style type="text/css">
     body{
     background-color:#ccc;         背景颜色
