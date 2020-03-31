@@ -24,7 +24,7 @@
 |<input type="checkbox">|20200428 |<input type="checkbox">  |20200429|<input type="checkbox">  |20200430
 
   
-- [ ] 20200331 
+- [x] 20200331 
 - [ ] 20200401 
 - [ ] 20200402 
 - [ ] 20200403 
