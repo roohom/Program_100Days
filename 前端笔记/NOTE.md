@@ -1,6 +1,6 @@
 # 前端学习笔记
 
-### From day06
+### From DAY 06
 
 ### 在页面中引用一段话可以使用&#60;q&#62;&#60;/q&#62;和&#60;blockquote&#62;&#60;/blockquote&#62;元素
 其中：
@@ -57,7 +57,7 @@ HTML
                       
 ~~~
 
-### day06 append
+### DAY 06 append
 
 #### 在web上发布自己的网站需要做以下几件事：
 ~~~
@@ -93,5 +93,62 @@ get<filename>:从服务器获取指定的文件，传回到你的计算机
 方法：  
 只要知道你所要链接到的其他网站的URL（统一资源定位符，Uniform Resource Locator）,再把这个URL放在&#60;a&#62;元素中作为href属性值即可。
 
+###DAY 07
+#### 设置文字水平和上下居中
+~~~html
+.box{
+    text-align:center;                                  设置水平方向居中
+    line-height:100px;(根据实际大小指定，满大小为垂直居中)    设置垂直方向居中
+}
+~~~
 
+#### 块元素,内联元素,内联块元素之间的转换
 
+display属性是用来设置元素的类型及隐藏的，常用的属性有：
+~~~
+1、none 元素隐藏且不占位置
+
+2、block 元素以块元素显示
+
+3、inline 元素以内联元素显示
+
+4、inline-block 元素以内联块元素显示
+~~~
+可以通过这样的示例实现当鼠标移至元素上时，显示内容，当鼠标移走时，隐去内容:
+~~~html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>元素的隐藏和显示</title>
+    <style>
+        
+        .box3{
+            width: 200px;
+            height: 200px;
+            background: green;
+        }
+        .box3 span{
+            display:none;
+        }
+        /*当我鼠标移入box3的时候让字体显示*/
+        .box3:hover span{
+            color:pink;
+            text-align:center;
+            line-height:200px;
+            font-size:30px;
+            display:block;
+        }
+    </style>
+</head>
+<body>
+    <div class="box1">box1</div>
+    <div class="box1 box2">box2</div>
+
+    <div class="box3">
+        <span>我显示了</span>
+    </div>
+</body>
+</html>
+~~~
+其效果类似于一些网页上当鼠标移动到上面时显示内容，移走又隐藏内容(京东、淘宝的选择购物板块、网易云课堂的课程内容板块).
