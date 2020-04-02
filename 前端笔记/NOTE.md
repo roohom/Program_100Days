@@ -93,7 +93,7 @@ get<filename>:从服务器获取指定的文件，传回到你的计算机
 方法：  
 只要知道你所要链接到的其他网站的URL（统一资源定位符，Uniform Resource Locator）,再把这个URL放在&#60;a&#62;元素中作为href属性值即可。
 
-###DAY 07
+### DAY 07
 #### 设置文字水平和上下居中
 ~~~html
 .box{
