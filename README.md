@@ -8,7 +8,7 @@
 ~~~
 
 **1.三十天学习HTML&CSS并写出一个较为精致的小网页，完成了吗？**(学习HTML&CSS是因为Python全栈需要)
- 
+
 - [ ] 是
 - [ ] 否 
 - [ ] 不完全做到
@@ -29,13 +29,13 @@
 |<input type="checkbox">|20200421 |<input type="checkbox">  |20200422|<input type="checkbox">  |20200423|<input type="checkbox">  |20200424|<input type="checkbox">  |20200425| <input type="checkbox">  |20200426| <input type="checkbox">  |20200427
 |<input type="checkbox">|20200428 |<input type="checkbox">  |20200429|<input type="checkbox">  |20200430
 
-  
+
 - [x] 20200331 
 - [x] 20200401 
 - [x] 20200402 
-- [ ] 20200403 
-- [ ] 20200404 
-- [ ] 20200405 
+- [x] 20200403 
+- [x] 20200404 
+- [x] 20200405 
 - [ ] 20200406 
 - [ ] 20200407 
 - [ ] 20200408 
@@ -65,4 +65,3 @@
 
 
 
- 
