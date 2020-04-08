@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>定时器的使用</title>
+    <style>
+        #box{
+            width: 100px;
+            height: 100px;
+            background: #009900;
+            line-height: 100px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div id="box">
+        <div align="center">
+            定时器的使用
+        </div>
+    </div>
+    <script>
+        /*获取元素对象*/
+        var oDiv = document.getElementById('box');
+        var i = 100;
+        //设置多次定时器，每隔33毫秒让box的宽度增加1
+        //多次定时器相当于Python中死循环里加了sleep()
+        var set = setInterval(function () {
+            i++;
+            oDiv.style.width = i+'px';   //字符串的拼接
+            //设置一个单次定时器，用来指定box的宽度增加到一定大小时停止多次定时器也就是让box的宽停止增加
+            if(i===800){
+                clearInterval(set);  //清楚定时器
+            }
+        },33);
+    </script>
+</body>
+</html>

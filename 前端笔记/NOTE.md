@@ -340,11 +340,13 @@ var a = 123;
 不能使用关键字
 ```
 
+### DAY 10
+
 ### JavaScript 基本数据类型
 
 typeof函数获取一个变量的类型：
 
-```angularjs
+```
 * boolean - 如果变量是 Boolean 类型的
 * number - 如果变量是 Number 类型的 (整数、浮点数)
 * string - 如果变量是 String 类型的 （采用""、 ''）
@@ -358,25 +360,28 @@ typeof函数获取一个变量的类型：
 
 使用：Number（）、parseInt() 和parseFloat（） 做类型转换
 
-```angularjs
-Number()强转一个数值(包含整数和浮点数)
-*parseInt()强转整数
-*parseFloat（）强转浮点数
+```
+Number() 强转一个数值(包含整数和浮点数)
 
-当字符串中包含任意一个非数值表示的字符时：
-Number() 返回NaN\
-parseInit(),parseFloat() 从头开始往后读，如果碰到非数值表示的字符时，就舍去后面的字符，前面的整数返回为整数，浮点数返回为浮点数。比如‘1.a234abc’ parseInit()返回1，parseFloat()返回1.234
+*parseInt() 强转整数
+
+*parseFloat() 强转浮点数
+
+当字符串中包含任意一个非数值表示的字符时:
+
+Number()返回NaN 
+parseInit(),parseFloat() 从头开始往后读,如果碰到非数值表示的字符时,就舍去后面的字符,前面的整数返回为整数,浮点数返回为浮点数.比如'1.a234abc' parseInit()返回1,parseFloat()返回1.234
 ```
 
 函数isNaN()检测参数是否不是一个数字。
 
-```angularjs
+```
 isNaN()  is not a number
 ```
 
 可用的 3 种强制类型转换如下：
 
-```angularjs
+```
 Boolean(value) - 把给定的值转换成 Boolean 型；
 
 Number(value) - 把给定的值转换成数字（可以是整数或浮点数）；
@@ -430,4 +435,257 @@ String(value) - 把给定的值转换成字符串；
 
 ```angularjs
 ?   :    三元运算符
+```
+
+
+
+### JS流程控制、循环
+
+window时Js中最大的对象，代表窗口，onload代表当页面加载完成之后才执行函数。
+
+~~~~
+<script type='text/javascript'>
+    window.onload = function(){
+        var oDiv = document.getElementById('div1');
+    }
+</script>
+
+....
+<div id='div1'>....</div>
+~~~~
+
+note:在设置样式的时候，有些属性是双拼词，比如font-size，必须写成fontSize才能生效。
+
+
+
+> 流程控制用于基于不同的条件来执行不同的动作。
+
+### if语句
+
+>if... else ...
+
+>if ... else if ... else...
+
+> 可以单分支,双分支,也可以多分支,需要注意 else if中间必须要有空格
+
+```
+if (condition){
+    //当条件为 true 时执行的代码
+}else{
+    //当条件不为 true 时执行的代码
+}
+```
+
+### switch语句
+
+> 多分支语句： switch（）{。 case ：。。。。}
+>
+> switch 语句用于基于不同的条件来执行不同的动作。
+
+```
+ switch(n){
+    case 1:
+        //执行代码块 1
+        break;
+    case 2:
+        //执行代码块 2
+        break;
+    default:
+        //与 case 1 和 case 2 不同时执行的代码
+}
+```
+
+### js循环
+
+> 程序中进行有规律的重复性操作，需要用到循环语句。
+
+> break 和 continue 语句对循环中的代码执行提供了更严格的控制。
+
+### **for循环**
+
+```
+for(var i=0;i<len;i++){
+    ......
+}
+```
+
+### **while循环**
+
+```
+var i=0;
+
+while(i<8){
+
+    ......
+
+    i++;
+
+}
+```
+
+### for-in 语句
+
+> for-in 语句是严格的迭代语句，用于枚举对象的属性。
+
+```
+var a = [10,20,30,40,50];
+//迭代的是数组的下标。
+for(i in a){
+   document.write(a[i]);
+}
+//输出： 1020304050
+```
+
+### js元素获取与操作
+
+> 可以使用内置对象document上的getElementById方法来获取页面上设置了id属性的元素，获取到的是一个html对象，然后将它赋值给一个变量，比如：
+
+```
+<script type="text/javascript">
+
+    var oDiv = document.getElementById('div1');
+
+</script>
+
+....
+
+<div id="div1">这是一个div元素</div>
+```
+
+> 上面的语句，如果把javascript写在元素的上面，就会出错，因为页面上从上往下加载执行的，javascript去页面上获取元素div1的时候，元素div1还没有加载，解决方法有两种：
+
+**第一种方法：将javascript放到页面最下边**
+
+```
+....
+
+
+<div id="div1">这是一个div元素</div>
+
+....
+
+<script type="text/javascript">
+
+    var oDiv = document.getElementById('div1');
+
+</script>
+</body>
+```
+
+**第二种方法：将javascript语句放到window.onload触发的函数里面,获取元素的语句会在页面加载完后才执行，就不会出错了。**
+
+```
+<script type="text/javascript">
+
+    window.onload = function(){
+        var oDiv = document.getElementById('div1');
+    }
+
+</script>
+
+....
+
+<div id="div1">这是一个div元素</div>
+```
+
+### 样式操作
+
+> 标签对象.style.css属性名="值" //改变标签对象的样式。
+>
+> 示例：id.style.color="red";
+>
+> 注意：属性名相当于变量名,所以css属性名中含有双拼词的(font-size)的减号要去掉，将后面的首字母大写。fontSize
+
+### 文本操作
+
+> 标签对象.innerHTML="内容"；//在标签对象内放置指定内容
+>
+> 获取一般用 innerText
+
+### 表单中值的操作
+
+> 标签对象.value； //获取标签对象的value值
+>
+> 标签对象.value=”值“；//设置标签对象的value值
+
+
+## DAY 11
+## js定时器
+
+通过使用 JavaScript，我们有能力作到在一个设定的时间间隔之后来执行代码，而不是在函数被调用后立即执行。我们称之为计时事件。
+
+**定时器在javascript中的作用**
+
+1、制作动画
+2、异步操作
+
+### 定时器类型及语法
+
+> setInterval() - 间隔指定的毫秒数不停地执行指定的代码。
+
+>  setTimeout() - 暂停指定的毫秒数后执行指定的代码 setInterval() 和 setTimeout() 是 Window对象的两个方法。
+
+```
+ 定时器：
+    setTimeout  只执行一次的定时器 
+    clearTimeout 关闭只执行一次的定时器
+    setInterval  反复执行的定时器
+    clearInterval 关闭反复执行的定时器
+
+  var time1 = setTimeout(myalert,2000);
+  var time2 = setInterval(myalert,2000);
+  /*
+  clearTimeout(time1);
+  clearInterval(time2);
+  */
+  function myalert(){
+      alert('ok!');
+  }
+```
+
+## js函数
+
+*第一种是使用function语句定义函数
+
+```
+function abc(){
+    alert('abc');
+}
+```
+
+*第二种是在表达式中定义函数
+
+```
+var 函数名 = function\(参数1，参数2，…\){函数体};
+
+//例如：
+
+//定义
+
+    var add = function\(a,b\){
+
+        return a+b;
+
+    }
+
+    //调用函数
+
+    document.write\(add\(50,20\)\);
+```
+
+### arguments
+
+```
+在函数代码中，使用特殊对象 arguments，开发者无需明确指出参数名，就能访问它们。
+例如，在函数 sayHi() 中，第一个参数是 message。用 arguments[0] 
+也可以访问这个值，即第一个参数的值（第一个参数位于位置 0，
+第二个参数位于位置 1，依此类推）。
+```
+
+### 关于变量和参数问题：
+
+```
+函数外面定义的变量是全局变量，函数内可以直接使用。
+在函数内部没有使用var定义的=变量则为全局变量，
+*在函数内使用var关键字定义的变量是局部变量，即出了函数外边无法获取。
 ```
