@@ -246,7 +246,27 @@ array([[0, 4]
 >见NumPy 4.2.ipynb
 
 二元通用函数：add和maximum。
->见见NumPy 4.2.ipynb
+>见NumPy 4.2.ipynb
 numpy.maximum逐个元素地将x和y中的元素的最大值计算出来。
 
 一些通用函数返回多个数组，比如modf，是Python内建函数divmod的向量化版本，返回一个浮点值数组的小数部分和整数部分。
+
+### 1.3 使用数组进行面向数组编程
+np.meshgrid函数接收两个一维数组，并根据两个数组的所有(x,y)对生成一个二维矩阵:
+
+#### 1.3.1 将条件逻辑作为数组操作
+numpy.where函数是三元表达式x if condition esle y的向量版本
+~~~~
+In []:reselt = [(x if c else y) for x, y, c in zip(xarr, yarr, cond)]
+~~~~
+- 会产生一些问题：
+    - 数组很大，速度会很慢
+    - 对多维数组没法使用
+**numpy.where()函数用来解决上述问题**
+~~~~
+result = np.where(cond, xarr, yarr)
+~~~~
+np.where()的第二个和第三个参数并不需要是数组，也可以是标量。
+
+#### 1.3.2、3、4、5见NumPy 4.3.ipynb笔记
+
