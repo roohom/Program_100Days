@@ -23,4 +23,14 @@
 		- get:
 		  - 利用参数给服务器传递信息，
 		  - 参数为dict，然后用parse编码 kw = parse.urlencode(dict)
+		- post
+		    - 一般向服务器传递参数使用
+		    - post是把信息自动加密处理
+		    - 我们如果想用post信息，需要用到data参数
+		    - urllib.parse.urlencode可以将字符串自动转换成：
+		        - Content-Type:
+		        - Content-Length:
+		        - 简而言之，一旦更改请求方法，请注意其他请求头部信息相适应
+		        - 案例v01
+		    
 		  
