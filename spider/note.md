@@ -72,7 +72,7 @@
         3. 创建opener
         4. 安装opener
     - 案例v07
-- cokie & session
+- cookie & session
     - 由于http协议的无记忆性，为了弥补这个缺憾，所采用的一个补充协议
     - cookie是发给用户(即http浏览器)的一段信息，session是保存在服务器上的另一半
     信息，用来记录用户信息
