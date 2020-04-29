@@ -87,3 +87,21 @@
         - 没有cookie登录，反馈的网页是未登录状态
     - 使用cookie登录
         - 直接把cookie复制下来，然后手动放入请求头中   
+        - http模块包含一些关于cookie的模块，通过他们我们可以自动使用cookie
+            - CookieJar
+                - 管理存储cookie，向传出的http请求添加cookie
+                - cookie存储在内存中，CookieJar实例回收后cookie将消失
+            - FileCookieJar(filename, delayload=None, policy=None):
+                - 使用文件管理cookie
+                - filename是保存cookie的文件
+                    - 创建与Mozilla浏览器cookie.txt兼容的FileCookieJar实例
+            - LwpCookieJar
+                - 创建与libwww-perl标准兼容的Set-Cookie3格式的FileCookie.Jar实例
+            - MozillaCookieJar
+            - 他们的关系是：Cookie->FileCookieJar->MozillaCooikieJar & LwpCookiJar
+        - 利用Cookie.Jar访问人人，案例v10
+            - 自动使用cookie登录：
+            - 打开登录页面后自动通过用户名密码
+            - 自动提取反馈回来的cookie
+            - 利用提取的cookie登录隐私页面
+            
