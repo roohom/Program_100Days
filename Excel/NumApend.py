@@ -9,6 +9,7 @@
 """
 使用Python操作
 从此文件中按姓名查找对应的学号填写到另一个excel中的姓名之前
+参考：https://www.cnblogs.com/pangwanzi/p/6475871.html
 """
 
 import xlrd
