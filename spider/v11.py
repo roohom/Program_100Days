@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time    : 2020/4/29 18:08
+# @Time    : 2020/4/30 09:35
 # @Author  : Roohom
 # @Site    : 
-# @File    : v10.py
+# @File    : v11.py
 # @Software: PyCharm
 
-# 使用Cookie.Jar自动登录
+
+"""
+把获取到的cookie打印出来
+"""
 
 
 from urllib import request, parse
@@ -52,18 +55,19 @@ def login():
     rsp = opener.open(req)
 
 
-def getHomePage():
-    url = 'http://www.renren.com/974330879/profile'
-
-    # 如果已经执行了login函数，则opener自动已经包含相应的cookie
-    rsp = opener.open(url)
-
-    html = rsp.read().decode()
-    with open('rsp-opener.html', 'w') as f:
-        f.write(html)
-
-
 if __name__ == '__main__':
+    """
+    执行完login()会得到授权的cookie
+    将得到的cookie打印出来
+    """
     login()
-    getHomePage()
+    print(cookie)
+    for item in cookie:
+        # print(type(cookie))
+        # print(item)
+        for i in dir(item):
+            print(i)
+            print(item)
+            print("-----------------------------")
+
 

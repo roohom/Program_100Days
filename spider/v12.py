@@ -1,19 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time    : 2020/4/29 18:08
+# @Time    : 2020/4/30 09:51
 # @Author  : Roohom
 # @Site    : 
-# @File    : v10.py
+# @File    : v12.py
 # @Software: PyCharm
-
-# 使用Cookie.Jar自动登录
-
 
 from urllib import request, parse
 from http import cookiejar
 
-# 创建Cookie.Jar的实例
-cookie = cookiejar.CookieJar()
+# 创建FileCookieJar的实例
+filename = 'cookie.txt'
+cookie = cookiejar.MozillaCookieJar(filename)
 
 # 生成cookie的管理器
 cookie_handler = request.HTTPCookieProcessor(cookie)
@@ -51,19 +49,17 @@ def login():
     # 使用opener发起请求
     rsp = opener.open(req)
 
-
-def getHomePage():
-    url = 'http://www.renren.com/974330879/profile'
-
-    # 如果已经执行了login函数，则opener自动已经包含相应的cookie
-    rsp = opener.open(url)
-
-    html = rsp.read().decode()
-    with open('rsp-opener.html', 'w') as f:
-        f.write(html)
+    # 保存cookie到文件
+    # ignore_discard表示即使cookie将要被丢弃也要保存下来
+    # ignore_expire表示如果该文件中的cookie即使已经过期，也要保存
+    cookie.save(ignore_discard=True, ignore_expires=True)
 
 
 if __name__ == '__main__':
     login()
-    getHomePage()
+
+
+
+
+
 
