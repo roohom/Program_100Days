@@ -27,7 +27,6 @@ if __name__ == '__main__':
     req = request.Request(url, headers=headers)
     rsp = request.urlopen(req)
 
-
     html = rsp.read().decode()
 
     with open('rsp-cookie.html', 'w') as f:

@@ -137,5 +137,22 @@
     - 经过加密，传输的就是密文，但是加密函数或过程一定是在浏览器完成，也就是一定胡巴代码(js代码)暴露给使用者
     - 通过阅读加密算法，就可以模拟出加密过程，从而达到破解
     - 案例v15
+    
+- ajax
+    - 异步请求
+    - 一定会有url，请求方法，可能有数据
+    - 一般使用json格式
+    - 案例v16，爬取豆瓣电影
         
-            
+# Request，献给人类
+- HTTP for Humans,更简洁更友好
+- 继承了urllib的所有特性
+- 底层使用的是urllib3
+- 开源
+- 中文文档
+- 安装: conda install requests
+- get请求
+    - request.get()    
+    - requests.request("get", url)
+    - 可以带有headers和params参数
+    - 案例v18
