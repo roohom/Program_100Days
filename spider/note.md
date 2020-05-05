@@ -156,3 +156,6 @@
     - requests.request("get", url)
     - 可以带有headers和params参数
     - 案例v18
+    
+- get返回内容
+    - 案例v19
