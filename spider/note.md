@@ -144,7 +144,7 @@
     - 一般使用json格式
     - 案例v16，爬取豆瓣电影
         
-# Request，献给人类
+# Requests，献给人类
 - HTTP for Humans,更简洁更友好
 - 继承了urllib的所有特性
 - 底层使用的是urllib3
@@ -159,3 +159,30 @@
     
 - get返回内容
     - 案例v19
+- post
+    - rsp = requests.post(url, data=data)
+    - data、headers要求是dict类型
+    - 案例v20
+    
+- proxy
+         proxies = {
+         "http": "address of proxy",
+         "https":"address of proxy"
+         }
+         
+         rsp = requests.request('get','http:xxxx','proxies=proxies')
+    - 代理可能会出错，如果使用人数过多，考虑安全问题，可能会被强行关闭
+    
+- 用户验证
+    - 代理验证   
+            # 可能需要使用使用HTTP basic Auth
+            # 格式为 用户名:密码
+            proxy = { "http":"china:123456@192.168.123:4444"} 
+            rsp = requests.get("http://baidu.com", proxy=poxy)
+- web客户端验证
+    - 如果需要web客户端验证，需要添加：auth=(用户名，密码)    
+        auth=("test1", "12345") # 授权信息
+        rsp = requests.get("http://www.baidu.com", auth=auth)
+        
+        
+        
