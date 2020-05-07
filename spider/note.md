@@ -1,4 +1,11 @@
 # 一些笔记
+
+- 爬虫三个步骤:
+    1. 把页面down下来
+    2. 把页面数据提取出来
+    3. 把页面里面下一个网址找到，再重复以上
+
+
 #### 对应图灵学院Python全栈课时59-63
 - Python网络包
 	- Python3.x urllib,urllib3,httplib2,requests
@@ -183,6 +190,38 @@
     - 如果需要web客户端验证，需要添加：auth=(用户名，密码)    
         auth=("test1", "12345") # 授权信息
         rsp = requests.get("http://www.baidu.com", auth=auth)
-        
-        
+
+- cookie
+    - requests可以自动处理cookie信息
+    
+            rsp = requests.get("http://xxxxxxxx")        
+            # 如果对方服务器穿送过来cookie信息，则可以通过反馈的cookie属性得到
+            # 返回一个cookieJar实例
+            cookiejar = rsp.cookies
+            
+            # 可以通过cookiejar转换成字典
+            cookiedict = requests.utils.dict_from_cookiejar(cookiejar)
+            
+            
+- session
+    - 跟服务器端session不是一个东西
+    - 模拟一次绘画，从客户端浏览器链接服务器开始，到客户端浏览器断开
+    - 能让我们跨请求时保持某些参数，比如在同一个session实例发出的所有请求之间保持cookie   
+            # 创建session对象，可以保持cookie值
+            se = requests.session()
+            headers = {"UserAgent":"xxxxxxxxx"}
+            data = {"name": "xxxxxxxx"}
+            
+            # 此时，由创建的session管理请求,负责发出请求
+            ss.post("http://www.baidu.com", data=data, headers=headers)
+            rsp = ss.get("xxxxxxxx")
+            
+- Https请求验证ssl证书
+    - 参数verify负责表示是否需要验证ssl证书，默认是True
+    - 如果不需要验证ssl证书，则设置成False表示关闭       
+    
+            rsp  requests.get("https://www.baidu.com", verify=False)
+            # 如果用verify=True访问12306，会报错，因为他证书有问题
+    
+    
         
