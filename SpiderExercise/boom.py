@@ -18,7 +18,7 @@ baseurl = "http://user.cnsoc.org/Reg/_RegHandler.html"
 
 data = {
     "action": "phonecode",
-    "phone": "18255908250"
+    "phone": "15645360899"
 }
 
 
@@ -29,7 +29,7 @@ headers = {
     "Connection": "keep-alive",
     "Content-Length": len(data),
     "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-    "Cookie": "ASP.NET_SessionId=kgtgrl3ko2bmeqtual3yzy1b; YqMark_sso=UXJ9KcZtLBUz6MG0/v4sSUqNwMoIyly4uJh7z6M8vZE=",
+    # "Cookie": "ASP.NET_SessionId=kgtgrl3ko2bmeqtual3yzy1b; YqMark_sso=UXJ9KcZtLBUz6MG0/v4sSUqNwMoIyly4uJh7z6M8vZE=",
     "Host": "user.cnsoc.org",
     "Origin": "http://user.cnsoc.org",
     "Referer": "http://user.cnsoc.org/Reg/userReg.html",

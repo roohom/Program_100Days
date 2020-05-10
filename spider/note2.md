@@ -88,8 +88,61 @@
     - //book/title | //book/author :选取book元素中的title和author元素
     - //title | //price: 选取文档中所有的title和price元素
     
+# lxml
+- Python的HTML/XML的解析器
+- 官方文档: http://lxml.de/index.html
+- 案例v26
+- 功能:
+    - 解析HTML
+    - 文件读取 案例v27.html, v28.py
+    - etree和XPath配合使用,案例v29
     
-
+# CSS选择器 BeautifulSoup4    
+- 当前得版本是bs4
+- 官网: http://beautifulsoup.readthedocs.io/zh_CN/v4.4.0/
+    - 正则，很快，不好用，不许安装
+    - beautifulsoup，慢，使用简单安装简单
+    - lxml，比较快，使用简单，安装一般
+- 案例v30
+- 四大对象
+    - Tag
+    - Navigator
+    - BeautifulSoup
+    - Comment
+- Tag
+    - 对应的Html中的标签
+    - 可以通过soup.tag_name
+    - Tag两个重要属性
+        - name
+        - attrs
+    - 案例v31
+    
+- NavigableString
+    - 对应内容值
+- BeautifulSoup
+    - 表示的是一个文档的内容，大部分可以把他当做tag对象
+    - 一般可以用soup来表示
+- Comment
+    - 特殊类型的NavigableString对象
+    - 对其输出，内容不包括注释符号
+    
+    
+- 遍历一个文档对象
+    - contents: tag的子节点以列表的方式给出来
+    - children:子节点以迭代器形式返回
+    - descendents:所有的子孙节点
+    - string
+    -案例v32
+- 搜索文档对象
+    - find_all(name, attrs, recursive, text, **kwargs)
+        - name:按照字符串搜索，可以传入的内容有:
+            - 字符串
+            - 正则表达式
+            - 列表
+        - kwargs参数:可以用来表示属性
+        - text:对应的tag的文本值
+        - 案例v33
+    
 
 
 
