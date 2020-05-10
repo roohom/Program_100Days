@@ -142,7 +142,16 @@
         - kwargs参数:可以用来表示属性
         - text:对应的tag的文本值
         - 案例v33
-    
+- CSS选择器    
+    - 使用soup.select， 返回一个列表
+    - 通过标签名称:soup.select("title"|)
+    - 通过类名:soup.select(".content")
+    - id查找:soup.select("#name_id")
+    - 组合查找:soup.select("div #input_content")
+    - 属性查找:soup.select("img[class='photo']")
+    - 获取tag内容:tag_get_text
+    - 案例v34
 
-
-
+# 正则表达式
+- 一套规则，可以在字符串文本中进行搜查替换等
+- 案例v35
