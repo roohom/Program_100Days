@@ -24,3 +24,28 @@
 - Selenium库里有一个webdriver的API
 - webdriver可以跟页面上的元素进行各种交互，用它可以进行爬取    
 - 案例v36
+- Chrome + chromedriver
+    - 下载安装Chrome
+    - 下载安装chromedriver
+
+- selenium操作主要分成两大类
+    - 得到UI元素
+        - find_element_by_id
+        - find_element_by_name
+        - find_element_by_xpath
+        - find_element_by_link_text
+        - find_element_by_partial_link_text
+        - find_element_by_tag_name
+        - find_element_by_class_name
+        - find_element_by_css_selector
+    - 基于UI元素操作的模拟
+        - 单击
+        - 右键
+        - 拖拽
+        - 输入
+        - 可以通过导入ActionsChains类来做到
+- 案例v37        
+        
+        
+        
+        
