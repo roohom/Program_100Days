@@ -32,6 +32,8 @@
     - Mac: brew install tesseract
     - Linux: apt-get install tesseract-ocr
     - 安装完成之后需要设置环境变量
+    - 案例v38
+    
     
     
     
