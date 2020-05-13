@@ -24,9 +24,39 @@
     - 明确需要目标/产出:编写item.py
     - 制作爬虫: 地址spider/xxspider.py
     - 存储内容: pipelines.py        
+- ItemPipeline
+    - 对应的是pipelines文件
+    - 爬虫提取出数据存入item后，item中保存的数据需要进一步处理，比如清晰、去重、存储等
+    - pipeline需要处理process_item函数
+        - process_item:
+            - spider提取出来的item作为参数传入，同时传入的还有spider
+            - 此方法必须实现
+            - 必须返回一个Item对象，被丢弃的Item不会被之后的pipeline处理
+        - __init__:构造函数
+            - 进行一些吧要的参数的初始化            
+        - open_spider(spider):
+            - spider对象被开启的时候调用
+        - close_spider(spider):
+            - 当spider对象被关闭的时候调用
+- Spider
+    - 对应的是文件夹spiders下的文件
+    - __init__:初始化爬虫的名称，start_urls列表
+    - start_requests:生成Requests对象交给Scrapy下载并返回response
+    - parse: 根据返回的response解析出相应的item，item自动进入pipeline，如果需要，解析出url，url自动交给requests模块，一直循环下去
+    - start_request:此方法仅能被调用一次，读取start_urls内容并启动循环过程
+    - name:设置爬虫名称
+    - start_urls: 设置开始第一批爬取的url 
+    - allow_domains:spider允许爬取的域名列表
+    - start_request(self): 纸杯调用一次
+    - parse
+    - log:日志记录   
         
-        
-        
+- 案例e1-qq招聘
+    - 创建项目  
+    - 编写item
+    - 编写spider
+    - 编写pipeline
+    - 设置pipeline      
         
         
         
