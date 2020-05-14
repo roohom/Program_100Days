@@ -29,9 +29,23 @@ class QQSpider(scrapy.Spider):
         # 下载结果自动存放在response中
         for each in response.xpath('//*[@class="even]'):
             item =  QQItem()
-            name = each.xpath()
-    #对于每一个工作信息内容
+            name = each.xpath('./td[1]a/text()').extract()[0]
+            detailLink = each.xpath('./td[1]a/@href').extract()[0]
+            positionInfo = each.xpath('./td[2]a/text()').extract()[0]
+            workLocation = each.xpath('./td[4]a/text()').extract()[0]
 
+            item['name'] = name.encode('utf-8')
+            item['detailLink'] = detailLink.encode('utf-8')
+            item['positionInfo'] = positionInfo.encode('utf-8')
+            item['workLocation'] = workLocation.encode('utf-8')
 
+            curpage = re.search('(\d+)', response=url).group(1)
+            page = int(curpage) + 10
+
+            url = re.sub('\d+', str(page), response.url)
+
+            yield scrapy.Request(url, callback=self.parse)
+
+            yield item
 
 
