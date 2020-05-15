@@ -50,6 +50,68 @@
     - start_request(self): 纸杯调用一次
     - parse
     - log:日志记录   
+- 中间件
+    - 中间件是出于引擎与下载器中间的一层组件
+    - 可以有很多个，被按顺序加载执行
+    - 作用是对发出的请求和返回的结果进行预处理
+    - 在middlewares文件中
+    - 需要在settings中设置以生效
+    - 一般一个中间件完成一个功能
+    - 必须实现以下一个或多个方法
+        - process_request(self, request, spider)
+            - 在request通过的时候被调用
+            - 必须返回None或Response或Request或raise IgnoreRequest
+            - None:scrapy将继续处理该request
+            - Request:scrapy会停止调用process_request并重新调度返回的request
+            - Response: scrapy将不会调用其他的process_request或者process_exception,直接将该response作为结果
+            同时会调用process_response函数
+        - process_response(self, request, response, spider)
+            - 跟process_request大同小异
+            - 每次返回结果的时候会自动调用
+            - 可以有多个，按顺序调用
+        - 案例
+        ~~~~
+        import random
+        import base64
+        # 从settings设置文件中导入值
+        from settings import USER_AGENTS
+        from settings import PROXIES
+        
+        #  随机的 User-Agent
+        class RandomUserAgent(object):
+          def process_request(self, request, spider):
+              useragent = random.choice(USER_AGENTS)
+              request.headers.setdefault("User-Agent", useragent)
+              
+        class RandomProxy(object):
+          def process_request(self, request, spider):
+              proxy = random.choice(PROXIES)
+              if proxy['user_passwd'] is None:
+                  #  没有代理账户验证的代理使用方式
+                  request.meta['proxy'] = "http://" + proxy['ip_port']
+              else:
+                  #  对账户密码进行 base64 编码转换
+                  base64_userpasswd = base64.b64encode(proxy['user_passwd'])
+                  #  对应到代理服务器的信令格式里
+                  request.headers['Proxy-Authorization'] = 'Basic ' + base64_userpasswd
+                  request.meta['proxy'] = "http://" + proxy['ip_port']
+- 去重
+    - 为了防止爬虫陷入死循环，需要去重
+    - 即在spider中得parse函数中，返回Request得时候加上dont_filter=False函数
+        ~~~~
+      myspider(scrapy.Spider)
+        def parse(....):
+            ...
+            yield scrapy.Request(url=url, callback=self.parse, dont_filter=False)
+      
+ 
+- 如何哎scrapy使用selenium      
+    - 可以放入中间件中的process_request函数中
+    - 在函数中调用selenium，完成爬取后返回Response
+        
+
+
+
         
 - 案例e1-qq招聘
     - 创建项目  
