@@ -100,7 +100,7 @@
 # CSS选择器 BeautifulSoup4    
 - 当前得版本是bs4
 - 官网: http://beautifulsoup.readthedocs.io/zh_CN/v4.4.0/
-    - 正则，很快，不好用，不许安装
+    - 正则，很快，不好用，无需安装
     - beautifulsoup，慢，使用简单安装简单
     - lxml，比较快，使用简单，安装一般
 - 案例v30
@@ -141,10 +141,11 @@
             - 列表
         - kwargs参数:可以用来表示属性
         - text:对应的tag的文本值
+        - attrs:传入的参数类型是**字典类型**
         - 案例v33
 - CSS选择器    
     - 使用soup.select， 返回一个列表
-    - 通过标签名称:soup.select("title"|)
+    - 通过标签名称:soup.select("title")
     - 通过类名:soup.select(".content")
     - id查找:soup.select("#name_id")
     - 组合查找:soup.select("div #input_content")

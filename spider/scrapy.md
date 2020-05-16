@@ -110,9 +110,7 @@
     - 在函数中调用selenium，完成爬取后返回Response
         
 
-
-
-        
+      
 - 案例e1-qq招聘
     - 创建项目  
     - 编写item
@@ -120,7 +118,25 @@
     - 编写pipeline
     - 设置pipeline      
         
-        
+# Scrapy-shell
+- shell
+    - 对于开始正式的项目之前，方便用来分析网页，如何去开始正式的项目
+- 启动
+    - Linux:打开命令行打开
+    - Scrapy shell "url:xxx"      
+    - 启动之后自动下载指定url的网页
+    - 下载完成后，url的内容保存在response的变量中，需要调用response
+- response
+    - 爬取到的内容保存在response中
+    - response.body是网页的代码
+    - response.headers返回的是http的头信息
+    - response.xpath()允许使用xpath语法选择内容
+    - response.css()允许使用css语法选择内容
+- selector
+    - 选择器，允许用户使用选择器来选择自己想要的内容
+    - response.selector.xpath:response.xpath是selector.xpath的快捷方式
+    - selector.extract:把节点的内容用Unicode形式返回
+    - selector.re:允许用户通过正则选择内容        
         
         
         

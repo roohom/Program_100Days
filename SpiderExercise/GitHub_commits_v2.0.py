@@ -73,6 +73,9 @@ def github_login(name, password):
 
     new_rsp = requests.get(url=profile_url, cookies=cookie).text
     page_soup = BeautifulSoup(new_rsp, 'lxml')
+
+    # find()用来查找符合条件的元素，find_all(name , attrs , recursive , text , **kwargs)
+    # 此处使用的是attrs，其参数类型是字典类型
     items = page_soup.find('h2', {"class": "f4 text-normal mb-2"}).text
     commits = items.split(" ")
     print("你的commits数量是{}".format(commits[6]))
