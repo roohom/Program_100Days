@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time    : 2020/3/23 23:35
+# @Time    : 2020/5/17 10:33
 # @Author  : Roohom
 # @Site    : 
-# @File    : test.py
+# @File    : boss_recruit_v2.py
 # @Software: PyCharm
 """
 爬取boss直聘下制定关键词(python)的职位信息

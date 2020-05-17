@@ -17,20 +17,23 @@ from bs4 import BeautifulSoup
 import random
 import json
 import time
+from selenium import webdriver
 
 user_agent_list = [
     "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36",
     "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36",
-    "Mozilla/5.0 (Windows NT 10.0; …) Gecko/20100101 Firefox/61.0",
+    "Mozilla/5.0 (Windows NT 10.0; ) Gecko/20100101 Firefox/61.0",
     "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36",
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.62 Safari/537.36",
     "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36",
     "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)",
-    "Mozilla/5.0 (Macintosh; U; PPC Mac OS X 10.5; en-US; rv:1.9.2.15) Gecko/20110303 Firefox/3.6.15"
+    "Mozilla/5.0 (Macintosh; U; PPC Mac OS X 10.5; en-US; rv:1.9.2.15) Gecko/20110303 Firefox/3.6.15",
+
+
 ]
 
 headers = {
-        "user-agent": random.choice(user_agent_list)
+    "user-agent": random.choice(user_agent_list)
     }
 
 get_citicode_url = "https://www.zhipin.com/wapi/zpCommon/data/city.json"
@@ -61,18 +64,19 @@ position:
 
 def get_url(query='', city="", industry="", position="", page=1):
     base_url = "https://www.zhipin.com/job_detail/?query={}&city={}&industry={}&position={}&page={}".format(query, city, industry, position, page)
-    urls = []
-    response = requests.get(base_url, headers=headers)
-    soup = BeautifulSoup(response.text, "lxml")
-    page_list = soup.find("div", "page").find_all("a")
-    urls.append(base_url)
-    while page_list[len(page_list) - 1]["href"] != "javascript:;":
-        page += 1
-        url = base_url.format(query, city, industry, position, page)
-        urls.append(url)
-        response = requests.get(url, headers=headers)
-        soup = BeautifulSoup(response.text, "lxml")
-        page_list = soup.find("div", "page").find_all("a")
+    base_url1 = "https://www.zhipin.com/job_detail/?query=python&city=101190400&industry=&position="
+    urls = {}
+
+    driver = webdriver.Chrome()
+
+    driver.get(base_url1)
+    data = driver.page_source
+
+    soup = BeautifulSoup(data, "lxml")
+    page_list = soup.find("span", {"class":"job-name"})
+    urls["job-name"] = page_list["title"]
+    urls["href"] = page_list["href"]
+    print(urls)
     return urls
 
 
@@ -132,20 +136,19 @@ def get_content(html):
     return contents
 
 
-
-
 def main():
     city_name = "深圳"
     city = get_city_code(city_name)
     query = "python"
     urls = get_url(query=query, city=city)
+    print(urls)
     contents = []
-    for url in urls:
-        html = get_html(url)
-        content = get_content(html)
-        contents += content
-        time.sleep(5)
-    print(contents)
+    # for url in urls:
+    #     html = get_html(url)
+    #     content = get_content(html)
+    #     contents += content
+    #     time.sleep(5)
+    # print(contents)
 
 
 if __name__ == '__main__':
