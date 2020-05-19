@@ -24,7 +24,7 @@ time.sleep(3)
 driver.find_element_by_xpath('//input[@name="password"]').send_keys("roohom123")
 time.sleep(3)
 
-driver.find_element_by_xpath('//button[@class="btn"]')
+driver.find_element_by_xpath('//button[@class="btn"]').click()
 time.sleep(3)
 
 
