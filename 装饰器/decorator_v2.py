@@ -18,7 +18,7 @@ def outer(f):
     return inner
 
 
-@outer                       # 此处使用的@outer的语法就是把outer作为了装饰器，等同于old = outer(old)
+@outer         # 此处使用的@outer的语法就是把outer作为了装饰器，等同于old = outer(old)
 def old():
     print("我是一个普通函数")
 
