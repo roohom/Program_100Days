@@ -3,7 +3,7 @@
 # @Time    : 2020/3/2 16:58
 # @Author  : Roohom
 # @Site    : 
-# @File    : test.py
+# @File    : wechat_vote.py
 # @Software: PyCharm
 """This is a test file..."""
 
