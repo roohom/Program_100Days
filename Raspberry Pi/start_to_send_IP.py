@@ -17,7 +17,7 @@ import datetime
 
 SMTPserver = "smtp.qq.com"
 Sender = "roohom@qq.com"  # 发送到邮箱的地址
-password = "ooxvqzhefxyecaje"  # 邮箱密码
+password = "xxxxxxxxxxxxx"  # 邮箱授权码
 time.sleep(5)
 nowTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # 顺便打印下时间，方便识别
 
