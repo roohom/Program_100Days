@@ -67,12 +67,37 @@ show databases;
 use 库名;
 ~~~
 
+4.删除数据库
+
+~~~mysql
+drop database 库名;
+~~~
+
+5.查看正在试用的数据库
+
+~~~mysql
+select database();
+~~~
+
+
+
+
+
 - 数据表的操作
 
 1.创建表
 
 ~~~mysql
 create table 表名(字段名， 类型， [字段约束]，...)
+
+类型:
+	varchar(n) 字符串
+	int        整形
+	double     浮点
+	date       时间
+	timestamp  时间戳
+约束:
+primary key    主键，被主键修饰字段中的数据，不能重复，不能为null
 ~~~
 
 实例:
@@ -141,7 +166,9 @@ show create table 表名;
 3.修改表名
 
 ~~~mysql
-语法: alter table 原表名 rename as 新表名;
+语法: 
+alter table 原表名 rename as 新表名;
+rename table 原表名 to 新表名;
 ~~~
 
 4.更改表中的自增的值
@@ -185,6 +212,16 @@ alter table users engine = 'myisam';
 drop table 表名;
 ~~~
 
+7.查找表
+
+~~~mysql
+查看当前数据库中的所有表:
+show tables;
+
+查看当前表的结构:
+desc 表名
+~~~
+
 
 
 ## 数据操作DML
@@ -195,14 +232,16 @@ drop table 表名;
 
 ~~~mysql
 # 标准添加
-insert into table 表名 (字段名1，字段名2，字段名3，...) values(字段值1，字段值2，字段值3，...)
+insert into 表名 (字段名1，字段名2，字段名3，...) values(字段值1，字段值2，字段值3，...)
 
 # 批量添加
-  insert into table 表名 values
+  insert into 表名 values
 ->(字段值,.....)，
 ->(字段值,.....)，
 ->(字段值,.....)，
 ->(字段值,.....);
+或者:
+  insert into 表名 values(值1，值2，值3...)
 ~~~
 
 修改数据
@@ -214,7 +253,10 @@ update 表名 set 字段名=值 where 条件
 删除数据
 
 ~~~mysql
+# delete 删除表数据比较慢，属于DML操作，在删除的时候会创建日志，可以回滚
+# truncate 删除表是表级别的操作，属于DDL操作，删除速度较快不可回滚
 delete from 表名 where 条件
+truncate table 表名;
 ~~~
 
 ## 数据查询DQL
@@ -253,5 +295,78 @@ select id,name,phone from users;
 
   
 
+## SQL约束
 
+### 主键约束
+
+- primary key约束唯一标识数据库表中的每条记录
+  - 主键不能为空
+  - 主键必须唯一
+  - 每张表只能有一个主键
+
+~~~mysql
+create table if not exists stu(
+    id int primary key ,
+    num int(10),
+    home_city varchar(50)
+);
+
+create table if not exists student(
+    id int,
+    num int(10),
+    home_city varchar(50),
+    constraint p_id primary key (id)
+);
+
+alter table stu add primary key (id);
+~~~
+
+- 删除主键约束
+
+~~~mysql
+alter table stu drop primary key;
+~~~
+
+- 自动增长列auto_increment
+
+自动增长列类型必须是整形，自动增长列必须为键(一般为主键)
+
+~~~mysql
+设置自动增长列的起始值
+alter table 表名 auto_increment = 1000;
+~~~
+
+
+
+- 非空约束not null
+
+指定的字段的值不接受null空值
+
+- 唯一约束
+  - unique约束唯一标识数据库中的每条记录
+  - unique和primary key约束均为列或集合提供了唯一性的保证
+  - primary key拥有自动定义的unique约束
+
+> 注意: 每个表可以有多个unique约束，但是每个表只能有一个primary key约束
+
+~~~mysql
+# 创建带unique约束的表
+表内添加:
+create table if not exists test(
+    id int primary key auto_increment ,
+    name varchar(50),
+    num int(10) unique
+);
+
+表外添加:
+alter table test change id id int(4) unique ;
+或者: 
+alter table test add unique (num);
+~~~
+
+删除唯一约束:
+
+~~~mysql
+alter table test drop index num;
+~~~
 
