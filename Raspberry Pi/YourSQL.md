@@ -276,7 +276,7 @@ options：
 
 ~~~mysql
 # 查询表中所有列所有数据
-select * from users;
+select [distinct] * | 列名 from users where 条件;
 
 # 指定字段列表进行查询
 select id,name,phone from users;
@@ -291,6 +291,133 @@ select id,name,phone from users;
 
   ~~~mysql
   select * from users where age > 22;
+  ~~~
+
+- 条件查询
+
+  通过order by语句，可以将查询的结果进行排序
+
+  ~~~mysql
+  select * from 表名 order by 排序字段 ASC|DESC; # (默认是asc)
+  ~~~
+
+- 聚合查询
+
+  五个聚合查询的函数
+
+  - count() 统计指定列不为null的记录行数
+  - sum() 计算指定列的数值和，如果指定列不是数值类型，计算结果为0
+  - max() 计算指定列的最大值，如果指定的列不是数值类型，那么使用字符串排序运算
+  - min()  计算指定列的最小值，如果指定的列不是数值类型，那么使用字符串排序运算
+  - avg() 计算指定列的平均值，如果指定列的类型不是数值类型，计算结果为0
+
+  ~~~mysql
+  # 主键可以作为统计的字段
+  select count(pid) 
+  from product;
+  
+  
+  ## 当聚合sum累加，空值默认会隐式转换为0进行累加
+  ## 如果字段是数字字符串，隐式转换为数字进行sum累加
+  ## 如果当前字段是以数字开头的字符串，会截取到第一个不为数字的位之前作为数字进行sum累加
+  ## 如果不是以数字开头的字符串，sum累加，等于0
+  
+  # 平均值
+  select pname,avg(price)
+  from product 
+  group by pname;
+  # 平均值 sum/count
+  select pname,sum(price)/count(price)
+  from product
+  group by panme;
+  ~~~
+
+  ~~~mysql
+  # 需求:将根据pname查询出来的最大的price对应的所有信息展示出来
+  # 方法一：
+  select a.* from product as a,
+  (select pname,max(price) as max_price
+  group by pname) as p
+  where p.pname = a.pname and p.max_price = a.price;
+  
+  # 方法二:
+  select p.* 
+  from product as p
+  where p.price=(
+  	select max(price)
+      from product
+      where p.pname = product.pname
+      group by pname
+  )
+  ~~~
+
+- 分组查询
+
+  使用group by语句对查询信息进行分组
+
+  格式：
+
+  ~~~mysql
+  select 字段1，字段2... from 表名 group by 分组字段 having 分组条件
+  ~~~
+
+  - having与where的区别:
+    - having 是在分组后对数据进行过滤，where是在分组前对数据进行过滤
+    - having后面可以使用分组函数（统计函数），where后面不可以使用分组函数
+
+    ~~~mysql
+    select pname,count(1)
+    from product 
+    where pname = '海澜之家'
+    group by pname
+    having count(1)>1;
+    ~~~
+
+- 分页查询
+
+  ~~~mysql
+  SELECT 字段1，字段2... FROM 表名 LIMIT M,N
+  M: 整数，表示从第几条索引开始，计算方式 （当前页-1）*每页显示条数
+  N: 整数，表示查询多少条数据 offset 偏移量（每页显示多少条数据）
+  SELECT 字段1，字段2... FROM 表名 LIMIT 0,5
+  SELECT 字段1，字段2... FROM 表名 LIMIT 5,5
+  #查询product表的前5条记录
+  SELECT * FROM product LIMIT 0,5
+  ~~~
+
+  **重要实例：**
+
+  ~~~mysql
+  # 查询出每个产品中价格 price 排名第二的价位的信息，如果没有为 null , pname
+  # 创建一个表，有两个字段 id salary (1,100)(2,200)(3,300)
+  # 方法 1 不等于最大的情况，再求最大。
+  select Max(salary)
+  from tmp
+  where salary not in (select Max(salary) from tmp);
+  # 方法 2 从第二个取1个
+  select salary from tmp order by salary limit 1,1;
+  ~~~
+
+- insert into select语句
+
+  ~~~mysql
+  INSERT INTO table2
+  SELECT column_name(s)
+  FROM table1;
+  # 案例: 将数据 拷贝到另外一个表结构一样的数据表里。
+  # 保证拷贝的目标表必须存在。
+  insert into product2
+  select * from product;
+  ~~~
+
+  ~~~mysql
+  # 允许table2 不存在，直接创建表和数据
+  CREATE TABLE table2 as
+  SELECT column_name(s)
+  FROM table1;
+  # 案例： 创建一个 与 product 一样表结构的表和数据
+  create table product2 as
+  select * from product;
   ~~~
 
   
