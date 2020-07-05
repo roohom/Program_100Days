@@ -11,9 +11,11 @@ sudo chmod 777 test.py
 - 第二步，打开/etc/rc.local
 ~~~~
 sudo nano /etc/rc.local
+或
+sudo vim /etc/rc.local
 ~~~~
 
 - 第三步，在/etc/rc.local文件中（语句exit 0 之上一行）添加执行脚本命令
 ~~~~
-/home/pi/test.py
+sudo python3 /home/pi/test.py
 ~~~~
