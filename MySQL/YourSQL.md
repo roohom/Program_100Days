@@ -1,19 +1,6 @@
 # YourSQL
 
-## 表的字段约束
-
-- unsigned  无符号，给数值类型使用表示为正数，不写可以表示正负数
-- 字段类型后面加括号限制宽度
-  - char(5), varchar(7)，在字符类型后面加限制 表示字符串的长度
-  - int(4)没有实际意义，默认无符号的int为int(11)，有符号的int为int(10)
-  - int(4) unsigned zerofill只有当给int类型设置前导零时，设置int的宽度才会有实际意义
-- not null 不为空
-- default 设置默认值
-- primary key 主键不能为空，且唯一，一般和自动递增一起配合使用
-- auto_increment 定义列为自增属性，一般用于主键，数值会自动增加1
-- unique 唯一索引(数据不能重复: 用户名)可以增加查询速度，但是会降低插入和更新速度
-
-
+> 更多的数据库操作和使用规范访问[MySQL](https://mysql.com/)
 
 ## 运算符
 
@@ -47,7 +34,7 @@
 
 ## MySQL数据库与数据表操作
 
-- 数据库的操作
+### 数据库的操作
 
 1.创建数据库
 
@@ -83,9 +70,9 @@ select database();
 
 
 
-- 数据表的操作
+### 数据表的操作
 
-1.创建表
+#### 创建表
 
 ~~~mysql
 create table 表名(字段名， 类型， [字段约束]，...)
@@ -118,7 +105,7 @@ show create table 表名;
 
 ~~~
 
-2.修改表结构
+#### 修改表结构
 
 >语法格式: alter table 表名 action(更改的选项)
 
@@ -163,7 +150,7 @@ show create table 表名;
 
   >注意：一般情况下无特殊要求，不要轻易修改表结构
 
-3.修改表名
+#### 修改表名
 
 ~~~mysql
 语法: 
@@ -171,14 +158,14 @@ alter table 原表名 rename as 新表名;
 rename table 原表名 to 新表名;
 ~~~
 
-4.更改表中的自增的值
+#### 更改表中的自增的值
 
 ~~~mysql
 # 在常规情况下，auto_increment默认情况下从1开始连续递增
 alter table users auto_increment = 1000;
 ~~~
 
-5.修改表引擎
+#### 修改表引擎
 
 ~~~mysql
 # 推荐在定义表时，表引擎为innodb
@@ -206,13 +193,13 @@ show table status from 库名 where name='users';
 alter table users engine = 'myisam';
 ~~~
 
-6.删除表
+#### 删除表
 
 ~~~mysql
 drop table 表名;
 ~~~
 
-7.查找表
+#### 查找表
 
 ~~~mysql
 查看当前数据库中的所有表:
@@ -259,6 +246,111 @@ delete from 表名 where 条件
 truncate table 表名;
 ~~~
 
+### 多表操作
+
+> category分类表，为一方，也就是主表，必须提供主键cid
+>
+> products商品表，为多方，也就是从表，必须提供外键category_id
+
+实例：
+
+~~~mysql
+CREATE TABLE category (
+cid VARCHAR(32) PRIMARY KEY ,
+cname VARCHAR(50)
+);
+CREATE TABLE products(
+pid VARCHAR(32) PRIMARY KEY ,
+pname VARCHAR(50),
+price INT,
+flag VARCHAR(2), #是否上架标记为：1表示上架、0表示下架
+category_id VARCHAR(32),
+CONSTRAINT products_fk FOREIGN KEY (category_id) REFERENCES category (cid)
+);
+~~~
+
+实例操作：
+
+~~~mysql
+#1 向分类表中添加数据
+INSERT INTO category (cid ,cname) VALUES('c001','服装');
+#2 向商品表添加普通数据,没有外键数据，默认为null
+INSERT INTO products (pid,pname) VALUES('p001','商品名称');
+#3 向商品表添加普通数据，含有外键信息(category表中存在这条数据)
+INSERT INTO products (pid ,pname ,category_id) VALUES('p002','商品名称2','c001');
+笛卡尔积（了解）
+一般情况下，没有任何意义。
+内连接
+左右表能关联上的数据显示出来，否则不显示。
+#4 向商品表添加普通数据，含有外键信息(category表中不存在这条数据) -- 失败,异常
+INSERT INTO products (pid ,pname ,category_id) VALUES('p003','商品名称2','c999');
+#5 删除指定分类(分类被商品使用) -- 执行异常
+DELETE FROM category WHERE cid = 'c001';
+~~~
+
+
+
+- 内连接
+
+  左右表能关联得上的显示出来，否则不显示。
+
+  分为**显示内连接**和**隐式内连接**
+
+~~~mysql
+# 隐式内连接
+# 语法格式：
+select * from A,B where 条件;
+# 案例：
+select *
+from category c,product p
+where c.cid = p.category_id
+外连接
+左外连接 left [outer] join
+获取到左表中所有右表不符合条件的数据，此时关联不上的字段为空。
+右外连接 right [outer] join
+获取右表中的所有左表不符合条件的数据，此时关联不上的字段为空。
+3. 多表查询
+# 显示内连接
+#语法格式
+select * from A inner join B on 条件;
+# 案例：
+select *
+from category c [inner] join product p on c.cid = p.category_id
+# 注： inner 可以省略
+~~~
+
+- 外连接
+
+  - 左外连接
+
+    获取到左表中所有右表不符合条件的数据，此时关联不上的字段为空。
+
+    ~~~mysql
+    # 语法格式
+    select * from A left outer join B on 条件;
+    # 案例
+    select * from category c
+    left [outer] join products p
+    on c.cid = p.category_id
+    ~~~
+
+  - 右外连接
+
+    获取右表中的所有左表不符合条件的数据，此时关联不上的字段为空。
+
+    ~~~mysql
+    # 语法格式
+    select * from A right outer join B on 条件;
+    # 案例
+    select * from category c
+    right [outer] join products p
+    on c.cid = p.category_id
+    ~~~
+
+    
+
+
+
 ## 数据查询DQL
 
 - 语法格式
@@ -272,7 +364,7 @@ options：
 [limit 分页参数]
 ~~~
 
-- 基础查询
+### 基础查询
 
 ~~~mysql
 # 查询表中所有列所有数据
@@ -301,77 +393,80 @@ select id,name,phone from users;
   select * from 表名 order by 排序字段 ASC|DESC; # (默认是asc)
   ~~~
 
-- 聚合查询
 
-  五个聚合查询的函数
+### 聚合查询
 
-  - count() 统计指定列不为null的记录行数
-  - sum() 计算指定列的数值和，如果指定列不是数值类型，计算结果为0
-  - max() 计算指定列的最大值，如果指定的列不是数值类型，那么使用字符串排序运算
-  - min()  计算指定列的最小值，如果指定的列不是数值类型，那么使用字符串排序运算
-  - avg() 计算指定列的平均值，如果指定列的类型不是数值类型，计算结果为0
+五个聚合查询的函数
 
-  ~~~mysql
-  # 主键可以作为统计的字段
-  select count(pid) 
-  from product;
-  
-  
-  ## 当聚合sum累加，空值默认会隐式转换为0进行累加
-  ## 如果字段是数字字符串，隐式转换为数字进行sum累加
-  ## 如果当前字段是以数字开头的字符串，会截取到第一个不为数字的位之前作为数字进行sum累加
-  ## 如果不是以数字开头的字符串，sum累加，等于0
-  
-  # 平均值
-  select pname,avg(price)
-  from product 
-  group by pname;
-  # 平均值 sum/count
-  select pname,sum(price)/count(price)
-  from product
-  group by panme;
-  ~~~
+- count() 统计指定列不为null的记录行数
+- sum() 计算指定列的数值和，如果指定列不是数值类型，计算结果为0
+- max() 计算指定列的最大值，如果指定的列不是数值类型，那么使用字符串排序运算
+- min()  计算指定列的最小值，如果指定的列不是数值类型，那么使用字符串排序运算
+- avg() 计算指定列的平均值，如果指定列的类型不是数值类型，计算结果为0
 
-  ~~~mysql
-  # 需求:将根据pname查询出来的最大的price对应的所有信息展示出来
-  # 方法一：
-  select a.* from product as a,
-  (select pname,max(price) as max_price
-  group by pname) as p
-  where p.pname = a.pname and p.max_price = a.price;
-  
-  # 方法二:
-  select p.* 
-  from product as p
-  where p.price=(
-  	select max(price)
-      from product
-      where p.pname = product.pname
-      group by pname
-  )
-  ~~~
+~~~mysql
+# 主键可以作为统计的字段
+select count(pid) 
+from product;
 
-- 分组查询
 
-  使用group by语句对查询信息进行分组
+## 当聚合sum累加，空值默认会隐式转换为0进行累加
+## 如果字段是数字字符串，隐式转换为数字进行sum累加
+## 如果当前字段是以数字开头的字符串，会截取到第一个不为数字的位之前作为数字进行sum累加
+## 如果不是以数字开头的字符串，sum累加，等于0
 
-  格式：
+# 平均值
+select pname,avg(price)
+from product 
+group by pname;
+# 平均值 sum/count
+select pname,sum(price)/count(price)
+from product
+group by panme;
+~~~
 
-  ~~~mysql
-  select 字段1，字段2... from 表名 group by 分组字段 having 分组条件
-  ~~~
+~~~mysql
+# 需求:将根据pname查询出来的最大的price对应的所有信息展示出来
+# 方法一：
+select a.* from product as a,
+(select pname,max(price) as max_price
+group by pname) as p
+where p.pname = a.pname and p.max_price = a.price;
 
-  - having与where的区别:
-    - having 是在分组后对数据进行过滤，where是在分组前对数据进行过滤
-    - having后面可以使用分组函数（统计函数），where后面不可以使用分组函数
-
-    ~~~mysql
-    select pname,count(1)
-    from product 
-    where pname = '海澜之家'
+# 方法二:
+select p.* 
+from product as p
+where p.price=(
+	select max(price)
+    from product
+    where p.pname = product.pname
     group by pname
-    having count(1)>1;
-    ~~~
+)
+~~~
+
+
+
+### 分组查询
+
+使用group by语句对查询信息进行分组
+
+格式：
+
+~~~mysql
+select 字段1，字段2... from 表名 group by 分组字段 having 分组条件
+~~~
+
+- having与where的区别:
+  - having 是在分组后对数据进行过滤，where是在分组前对数据进行过滤
+  - having后面可以使用分组函数（统计函数），where后面不可以使用分组函数
+
+  ~~~mysql
+  select pname,count(1)
+  from product 
+  where pname = '海澜之家'
+  group by pname
+  having count(1)>1;
+  ~~~
 
 - 分页查询
 
@@ -420,9 +515,208 @@ select id,name,phone from users;
   select * from product;
   ~~~
 
-  
+
+### 多表查询
+
+- 子查询
+
+  子查询：一条select语句结果作为另一条select语法一部分（查询条件，查询结果，表等）。
+  select ....查询字段 ... from ... 表.. where ... 查询条件
+
+  ~~~mysql
+  # 案例1
+  select a.* from product a,
+  (select pname,max(price) max_price
+  from product
+  group by pname) as p
+  where p.pname=a.pname and p.max_price=a.price;
+  # 案例2
+  select p.*
+  from product p -- 检索 product
+  where p.price=( -- 过滤 price = max(price)
+  select max(price) -- 根据分组计算出最大的 price
+  from product
+  where p.pname = product.pname -- price = max(price) and 都是海澜之家
+  group by pname
+  );
+  # 案例3
+  # 需求 查询出来分类为化妆品的所有商品
+  SELECT * FROM products p
+  WHERE p.category_id =
+  (
+  SELECT c.cid FROM category c
+  WHERE c.cname='化妆品'
+  );
+  # 案例4
+  # 需求，查询出来分类为化妆品或者服饰的所有商品
+  SELECT * FROM products p
+  WHERE p.category_id in
+  (
+  SELECT c.cid FROM category c
+  WHERE c.cname='化妆品' or c.cname='服饰'
+  );
+  # 案例5
+  # 需求，通过子查询 隐式内连接查询所有化妆品的所有商品
+  SELECT * FROM products p ,
+  (SELECT * FROM category WHERE cname='化妆品') c
+  WHERE p.category_id = c.cid;
+  ~~~
+
+## MySQL索引
+
+> 索引是 MySQL 中一种十分重要的数据库对象。它是数据库性能调优技术的基础，常用于实现数据的快速检索。
+>
+> 索引就是根据表中的一列或若干列按照一定顺序建立的列值与记录行之间的对应关系表，实质上是一张描述索引列的列值与原表中记录行之间一一对应关系的有序表。
+
+### 概述
+
+在 MySQL 中，通常有以下两种方式访问数据库表的行数据：
+
+- 1) 顺序访问
+  顺序访问是在表中实行全表扫描，从头到尾逐行遍历，直到在无序的行数据中找到符合条件的目标数
+  据。这种方式实现比较简单，但是当表中有大量数据的时候，效率非常低下。
+- 2) 索引访问
+  索引访问是通过遍历索引来直接访问表中记录行的方式。使用这种方式的前提是对表建立一个索引，在
+  列上创建了索引之后，查找数据时可以直接根据该列上的索引找到对应记录行的位置，从而快捷地查找
+  到数据。索引存储了指定列数据值的指针，根据指定的排序顺序对这些指针排序。
+
+索引分类
+
+- B-树索引
+- 哈希索引
+- 普通索引
+- 唯一性索引
+- 主键索引
+
+### 索引的操作
+
+- 普通索引的格式
+
+  ~~~mysql
+  #1 直接新增索引
+  CREATE INDEX indexName ON mytable(username([length]));
+  # 案例
+  create index idx_product_categoryId on products(category_id);
+  #2 通过修改表结构创建索引
+  # 修改表结构
+  ALTER table tableName ADD INDEX indexName(columnName)
+  # 案例
+  alter table products add index idx_product_categoryId (category_id);
+  # 创建表结构时候直接创建索引
+  CREATE TABLE mytable(
+  ID INT NOT NULL,
+  username VARCHAR(16) NOT NULL,
+  INDEX indexName(username(length))
+  );
+  ~~~
+
+- 查看索引信息
+
+  ~~~mysql
+  # 通过元数据信息及索引的名称获取索引信息。
+  select * from information_schema.INNODB_INDEXES where
+  NAME='idx_product_categoryId';
+  # 查看某张表比如 product 表的索引信息。
+  show index from products;
+  ~~~
+
+- 删除索引
+
+  ~~~mysql
+  #1 根据指定的索引名称删除索引
+  DROP INDEX [indexName] ON mytable;
+  ## 案例：
+  drop index idx_product_flag on products;
+  #2 通过修改表结构来删除索引
+  alter table mytable drop index indexName;
+  ## 案例：
+  alter table products drop index idx_product_flag;
+  ~~~
+
+- 创建唯一索引
+
+  ~~~mysql
+  #1 直接新增索引
+  CREATE UNIQUE INDEX indexName ON mytable(username([length]));
+  # 案例
+  create unique index idx_uniq_hashcode on products(`hashcode`);
+  #2 通过修改表结构创建索引
+  # 修改表结构
+  ALTER table tableName ADD UNIQUE INDEX indexName(columnName)
+  # 案例
+  alter table products add unique index idx_uniq_hashcode (hashcode);
+  # 创建表结构时候直接创建索引
+  CREATE TABLE mytable(
+  ID INT NOT NULL,
+  username VARCHAR(16) NOT NULL,
+  UNIQUE [INDEX] indexName(username(length))
+  );
+  ~~~
+
+- 删除索引
+
+  ~~~mysql
+  #1 根据指定的索引名称删除索引
+  DROP INDEX [indexName] ON mytable;
+  # 案例：
+  drop index indexName on mytable;
+  #2 通过修改表结构来删除索引
+  alter table mytable drop index indexName;
+  # 案例：
+  alter table products drop index idx_uniq_hashcode;
+  ~~~
+
+> 在唯一索引中
+>
+> ~~~mysql
+> unique not null 等价于 primary key
+> ~~~
+
+### 索引的使用原则和注意事项
+
+- 占空间
+- 需要维护，维护需要成本（时间成本、资源成本）
+
+### 应用场景
+
+1.多表关联，使用on，关联操作时需要建索引；
+
+2.where条件，过滤<,<=,=,>=,between,in以及某些时候的like(不以通配符%或_开头的情形)
+
+~~~mysql
+#1 建立索引
+select * from user u where u.name in ('王','李');
+#2 建立索引
+select pid,price,category_id
+from product p
+where p.price in ( -- 普通索引
+select price from t_product_price where price >200
+);
+~~~
+
+3.查看执行计划
+
+~~~mysql
+explain select * from category c inner join products p on c.cid =
+p.category_id
+~~~
+
+## MySQL开窗函数
 
 ## SQL约束
+
+### 表的字段约束
+
+- unsigned  无符号，给数值类型使用表示为正数，不写可以表示正负数
+- 字段类型后面加括号限制宽度
+  - char(5), varchar(7)，在字符类型后面加限制 表示字符串的长度
+  - int(4)没有实际意义，默认无符号的int为int(11)，有符号的int为int(10)
+  - int(4) unsigned zerofill只有当给int类型设置前导零时，设置int的宽度才会有实际意义
+- not null 不为空
+- default 设置默认值
+- primary key 主键不能为空，且唯一，一般和自动递增一起配合使用
+- auto_increment 定义列为自增属性，一般用于主键，数值会自动增加1
+- unique 唯一索引(数据不能重复: 用户名)可以增加查询速度，但是会降低插入和更新速度
 
 ### 主键约束
 
@@ -495,5 +789,132 @@ alter table test add unique (num);
 
 ~~~mysql
 alter table test drop index num;
+~~~
+
+### 外键约束
+
+~~~mysql
+语法：
+alter table 从表 add [constraint] [外键名称] foreign key (从表外键字段名) references
+
+主表 (主表的主键);
+[外键名称] 用于删除外键约束的，一般建议“_fk”结尾
+alter table 从表 drop foreign key 外键名称
+~~~
+
+> 注意：
+>
+> 主表没有建立主键，需要先创建主表的主键，然后才能创建从表外键约束。
+> 创建外键的目的： 保证数据完整性
+> 不能在从表中添加主表中关联的cid不存在的分类。
+
+
+
+## MySQL数据库导入导出和权限管理
+
+### 数据的导入导出
+
+- MySQL数据库数据的导出
+
+  ~~~shell
+  # 只在shell端，不进入mysql
+  # 键入以下命令
+  mysqldump -u root -p 库名 > ~/地址/名称
+  ~~~
+
+  导出一个库中所有数据，会形成一个建表和添加语句组成的sql文件
+
+- 将数据库中的表导出
+
+  ~~~shell
+  mysqldump -u root -p 库名 表名 > ~地址/名称
+  ~~~
+
+  
+
+- 数据导入
+
+  把导出的sql文件数据导入到数据库中
+
+  - 先进入到数据库中创建一个库用来接收你想导入的数据
+
+  - 退出mysql
+
+  - ~~~shell
+    mysql -u root -p 你刚才建的库 <  文件名
+    ~~~
+
+### 权限管理
+
+> root用户是数据库红权限最高的用户
+>
+> 可以创建不同的用户，或者项目，创建不同的mysql用户，并适当地授权，完成数据库的相关操作
+>
+> 这样就一定程度上保证了数据库的安全
+
+- 创建用户
+
+  ~~~mysql
+  grant授权的操作 on 授权的库.授权的表 to 账户@登录地址 identified by '密码'；
+  
+  # 在mysql中创建一个叫 baicai 的用户，并赋予其在yoursql数据库对所有表中进行 增和查 的权限
+  grant select, insert on yoursql.* to baicai@'%' identifid by '123456' # % 代表登录地址不限
+  
+  # 给用户 huacai 密码 123456 对yoursql数据库中所有表所有的操作权限
+  grant all on yoursql.* to huacai@'%' identified by '123456'
+  
+  # 删除用户
+  drop user 'huacai'@'%'
+  ~~~
+
+  
+
+## Python操作数据库
+
+> 使用pymysql包
+>
+> 详情历程可以见：[Pymysql](https://pypi.org/project/PyMySQL/)
+
+- 大致流程
+
+  - 1.链接mysql数据库
+  - 2.创建游标对象
+  - 3.准备sql
+  - 4.用游标对象执行sql
+  - 5.提取结果
+  - 6.关闭数据库连接
+
+  
+
+> 连接mysql数据库时，cursorclass = pymysql.cursors.DictCursor可以把结果转为字典类型，默认为元组
+
+~~~python
+import pymysql.cursors
+
+# Connect to the database
+# 连接mysql数据库
+connection = pymysql.connect(host='localhost',
+                             user='user',
+                             password='passwd',
+                             db='db',
+                             charset='utf8mb4',
+                             cursorclass=pymysql.cursors.DictCursor)
+# 2.创建游标对象
+cursor = connection.cursor()
+
+# 3.准备sql语句
+sql = "select version()"
+
+# 4.执行sql语句
+cursor.execute(sql)
+
+# 5.提取结果 fetchall() 提取所有的结果 fetchone() 提取一条结果
+data = cursor.fetchall()
+
+# 6.关闭数据库连接
+connection.close()
+
+# 将获取到的数据输出
+print(data)
 ~~~
 
