@@ -303,13 +303,9 @@ select * from A,B where 条件;
 # 案例：
 select *
 from category c,product p
-where c.cid = p.category_id
-外连接
-左外连接 left [outer] join
-获取到左表中所有右表不符合条件的数据，此时关联不上的字段为空。
-右外连接 right [outer] join
-获取右表中的所有左表不符合条件的数据，此时关联不上的字段为空。
-3. 多表查询
+where c.cid = p.category_id;
+
+
 # 显示内连接
 #语法格式
 select * from A inner join B on 条件;
@@ -323,30 +319,40 @@ from category c [inner] join product p on c.cid = p.category_id
 
   - 左外连接
 
+    ~~~mysql
+  left [outer] join
+    ~~~
+  
     获取到左表中所有右表不符合条件的数据，此时关联不上的字段为空。
-
+  
+    举例：[LeetCode官网数据库第175题组合两个表](https://leetcode-cn.com/problems/combine-two-tables/)
+  
     ~~~mysql
     # 语法格式
-    select * from A left outer join B on 条件;
+  select * from A left outer join B on 条件;
     # 案例
-    select * from category c
+  select * from category c
     left [outer] join products p
-    on c.cid = p.category_id
+  on c.cid = p.category_id
     ~~~
-
+  
   - 右外连接
-
-    获取右表中的所有左表不符合条件的数据，此时关联不上的字段为空。
-
+  
+    ~~~mysql
+  右外连接 right [outer] join
+    ~~~
+    
+  获取右表中的所有左表不符合条件的数据，此时关联不上的字段为空。
+    
     ~~~mysql
     # 语法格式
     select * from A right outer join B on 条件;
     # 案例
-    select * from category c
+  select * from category c
     right [outer] join products p
     on c.cid = p.category_id
     ~~~
-
+    
     
 
 
