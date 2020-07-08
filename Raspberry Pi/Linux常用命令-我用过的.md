@@ -24,14 +24,14 @@ sudo mv source_folder_path destination_folder_path
 ## 系统性
 
 1. 显示文件列表命令
-~~~~
+~~~~shell
 ls 英文单词list的缩写
 
 ls -a 显示指定目录下的所有目录与文件，包括隐藏文件
 ls -l 以列表方式显示文件的详细信息
 ls -h 配合-l以人性化的方式显示文件大小
 ~~~~
-~~~~
+~~~~shell
 ls #查看当前目录内容(缺点: 隐藏文件看不到)
 ls -a #查看当前目录内容,包括隐藏文件
 ls -al #查看目录内容的详细信息(查看文件类型、权限、大小等)
@@ -40,14 +40,14 @@ ls /root #查看/root目录下内容
 ~~~~
 
 2.目录查看、目录创建和目录删除
-~~~~
+~~~~shell
 pwd 查看当前工作目录
 mkdir 创建文件夹
     mkdir -p /root/aaa/bbb 创建有层级的目录
 rm -rf 删除目录  r是英文单词recursive的缩写，f是force的缩写，代表在文件夹里递归强制删除没有任何提醒，
 ~~~~
 3.创建文件
-~~~~
+~~~~shell
 touch a.txt  在当前目录创建a.txt文件
 touch /root/a.txt 在root文件夹下创建a.txt文件
 ~~~~
@@ -58,27 +58,28 @@ mv命令
 mv 源文件目录 目的文件目录
 ~~~~
 
-也可以用来更改文件名
-~~~~
+也可以用来**更改文件名**
+~~~~shell
 mv 原名 更改后的名字
 ~~~~
 
 4.查看文件
 cat命令
-~~~~
+~~~~shell
 cat /root/initial-setup-ks.cfg
 ~~~~
 
 5.复制命令
 cp命令
-~~~~
-cp a.txt dir1 #将a.txt复制到dir1目录
-cp a.txt b.txt #将a.txt复制到b.txt
+~~~~shell
+cp a.txt dir1 # 将a.txt复制到dir1目录
+cp a.txt b.txt # 将a.txt复制到b.txt
 ~~~~
 
 6.压缩与解压缩
 tar命令
-~~~~
+
+~~~~shell
 参数     解释
 -c    创建一个新tar文件
 -v    显示运行过程的信息
@@ -89,13 +90,15 @@ tar命令
 ~~~~
 
 6.1 解压
-~~~~
+
+~~~~shell
 tar -zxvf 压缩文件[-C] [指定解压目录]
 
 tar -zxvf redis-3.2.8.tar.gz #将文件解压到当前目录
 tar -zxvf redis-3.2.8.tar.gz -C /root/dir #将文件解压到指定目录
 ~~~~
 6.2压缩
+
 ~~~~shell
 tar -c[z]vf 压缩文件目录
 
@@ -293,7 +296,7 @@ ln -s /usr/bin/ls  /home/itcast/aa/ls # 将ls命令生成软连接发送到itcas
 1.设置行号
 
 ~~~vim
-set nu或者是set number
+:set nu或者是set number
 ~~~
 
 2.进入文件的第n行
@@ -317,12 +320,12 @@ vi/vim 文件名 +10 # 进入文件的第10行
 5.进入命令模式
 
 ~~~shell
-Esc
+Esc 再输入命令
 ~~~
 
 常用命令
 
-~~~shell
+~~~vim
 命令    功能
 o     在当前行后面插入一空行
 O     在当前行前面插入一空行

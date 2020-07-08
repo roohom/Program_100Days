@@ -292,7 +292,7 @@ DELETE FROM category WHERE cid = 'c001';
 
 - 内连接
 
-  左右表能关联得上的显示出来，否则不显示。
+  左右表能关联得上的显示出来，否则不显示，即**找出来两个表每个表中符合条件的共有记录**。
 
   分为**显示内连接**和**隐式内连接**
 
@@ -320,20 +320,22 @@ from category c [inner] join product p on c.cid = p.category_id
   - 左外连接
 
     ~~~mysql
-  left [outer] join
+    left [outer] join
     ~~~
   
     获取到左表中所有右表不符合条件的数据，此时关联不上的字段为空。
+  
+    > (根据左表的记录，在被连接的右表中找出符合条件的记录与之匹配，如果找不到与左表匹配的，用null表示，此时，左表的数据是全保留的，类似于**A∪(A∩B)**)
   
     举例：[LeetCode官网数据库第175题组合两个表](https://leetcode-cn.com/problems/combine-two-tables/)
   
     ~~~mysql
     # 语法格式
-  select * from A left outer join B on 条件;
+    select * from A left outer join B on 条件;
     # 案例
-  select * from category c
+    select * from category c
     left [outer] join products p
-  on c.cid = p.category_id
+    on c.cid = p.category_id
     ~~~
   
   - 右外连接
@@ -342,8 +344,11 @@ from category c [inner] join product p on c.cid = p.category_id
   右外连接 right [outer] join
     ~~~
     
+  
   获取右表中的所有左表不符合条件的数据，此时关联不上的字段为空。
-    
+  
+  > (根据右表的记录，在被连接的左表中找出符合条件的记录与之匹配，如果找不到匹配的，用null填充，此时，右表的数据是全保留的，类似于**(A∩B)∪A**)
+  
     ~~~mysql
     # 语法格式
     select * from A right outer join B on 条件;
@@ -352,10 +357,8 @@ from category c [inner] join product p on c.cid = p.category_id
     right [outer] join products p
     on c.cid = p.category_id
     ~~~
+  
     
-    
-
-
 
 ## 数据查询DQL
 
