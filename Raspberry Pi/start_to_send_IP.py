@@ -6,8 +6,6 @@
 # @File    : start_to_send_IP.py
 # @Software: PyCharm
 
-# !/usr/bin/env python
-# -*- coding: utf-8 -*-
 import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
